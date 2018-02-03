@@ -52,11 +52,11 @@
         }
 
         void IShop.OnLoadingFinished() {
-            throw new System.NotImplementedException();
+            LoadingAnimator.SetBool("Visible", false);
         }
 
         void IShop.OnLoadingStarted() {
-            throw new System.NotImplementedException();
+            LoadingAnimator.SetBool("Visible", true);
         }
 
         void IShop.OnPurchaseCancelled() {}
@@ -115,6 +115,9 @@
         public Button CloseButton;
         public Button BackButton;
 
+        [Header("Loading")]
+        public Animator LoadingAnimator;
+
         public void InitializeViews() {
             _productListView = Instantiate<ProductListView>(ProductListViewPrefab);
             _productDetailsView = Instantiate<ProductDetailsView>(ProductDetailsViewPrefab);
@@ -133,14 +136,14 @@
         }
 
         public void Show() {
+            Awake();
+
             if (_waitForHiddenAndDeactivateRoutine != null) {
                 StopCoroutine(_waitForHiddenAndDeactivateRoutine);
             }
 
             gameObject.SetActive(true);
             Animator.Play("Show", 0);
-
-            //Temporary, until we refactor
             _controller.Load();
         }
 
